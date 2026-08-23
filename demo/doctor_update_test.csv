@@ -1,0 +1,2 @@
+order_id,order_date,status,customer_id,customer_name,customer_phone,customer_email,city,district,delivery_type,delivery_cost,payment_method,payment_status,payment_amount,currency,total_amount,items_json
+طلب-D1,2025-01-17T04:50:00,مؤكد,عميل-D1,محمد UPDATE TEST,777559764,user@example.com,تعز,القاهرة,عادي,2000,نقدي,تم الدفع,52000,YER,52000,"[{""sku"": ""SKU-1"", ""name"": ""منتج"", ""qty"": 1, ""unit_price"": 50000, ""total"": 50000}]"

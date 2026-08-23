@@ -1,0 +1,27 @@
+
+
+
+هذا إثبات Idempotency
+
+08_idempotency_proof.png
+
+Clear-Host
+Set-Location "D:\Projects\Shehab_BigData_Pipeline"
+
+C:\anaconda\envs\bigdata\python.exe -c "from pymongo import MongoClient; c=MongoClient('mongodb://127.0.0.1:27017'); db=c['shehab_viva_idempotency']; runs=db.orders_raw.distinct('id_run'); print('=== COUNTS ==='); print('Raw =',db.orders_raw.estimated_document_count()); print('Validated =',db.orders_validated.estimated_document_count()); print('Quarantine =',db.quarantine_orders.estimated_document_count()); print('\n=== RAW RUNS ==='); [print(r,'=',db.orders_raw.count_documents({'id_run':r})) for r in runs]; ids=db.orders_validated.distinct('id_order'); print('\n=== VALIDATED BUSINESS KEYS ==='); print('Validated documents =',db.orders_validated.estimated_document_count()); print('Unique id_order =',len(ids)); print('Duplicate validated IDs =',db.orders_validated.estimated_document_count()-len(ids)); c.close()"
+
+
+
+
+
+
+
+
+هذا إثبات Upsert
+
+09_upsert_update_proof.png
+
+Clear-Host
+Set-Location "D:\Projects\Shehab_BigData_Pipeline"
+
+C:\anaconda\envs\bigdata\python.exe -c "from pymongo import MongoClient; from pprint import pprint; c=MongoClient('mongodb://127.0.0.1:27017'); db=c['shehab_viva_update']; print('=== RAW VERSIONS OF D1 ==='); [pprint(x) for x in db.orders_raw.find({'record_raw.order_id':'طلب-D1'},{'_id':0,'id_run':1,'record_raw.order_id':1,'record_raw.customer_name':1})]; print('\n=== FINAL VALIDATED D1 ==='); pprint(db.orders_validated.find_one({'id_order':'طلب-D1'},{'_id':0,'id_order':1,'customer_name':1,'source_run_id':1,'record_hash':1})); print('\n=== FINAL COUNT FOR D1 ==='); print(db.orders_validated.count_documents({'id_order':'طلب-D1'})); c.close()"

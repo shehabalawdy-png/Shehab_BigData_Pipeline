@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.runtime/
+data/*.csv
+!demo/*.csv
+*.log
+
+.viva_tmp/
+.ipynb_checkpoints/
+*.zip
