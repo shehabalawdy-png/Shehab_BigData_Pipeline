@@ -24,6 +24,7 @@ from config.settings import (
 from src.quality_rules import evaluate_record
 from src.hashing import business_record_hash
 from src.schema import RAW_COLUMNS, CsvSchemaError, read_csv_header, row_to_raw_record
+from src.phase2.materialized_views import apply_order_change
 
 DELTA_COLUMNS = (*RAW_COLUMNS, "version")
 
@@ -163,7 +164,14 @@ def run_incremental(input_file, database=MONGO_DATABASE, write_batch_size=BATCH_
                 final_doc["record_hash"] = business_record_hash(final_doc)
                 existing = validated.find_one(
                     {"id_order": final_doc["id_order"]},
-                    {"record_hash": 1, "source_version": 1},
+                    {
+                        "record_hash": 1,
+                        "source_version": 1,
+                        "order_date": 1,
+                        "total_amount": 1,
+                        "delivery_cost": 1,
+                        "items": 1,
+                    },
                 )
                 action = decide_version_action(
                     None if existing is None else existing.get("source_version", 0),
@@ -178,6 +186,20 @@ def run_incremental(input_file, database=MONGO_DATABASE, write_batch_size=BATCH_
                         final_doc,
                         upsert=True,
                     )
+
+                    # Phase 2:
+                    # ????? ???Materialized Views ?????? ???.
+                    # ?? ??? ??? Full Rebuild ??? ?? Delta.
+                    apply_order_change(
+                        old_order=(
+                            existing
+                            if action == "updated"
+                            else None
+                        ),
+                        new_order=final_doc,
+                        database=database,
+                    )
+
                     metrics[action] += 1
                 elif action == "unchanged":
                     metrics["unchanged"] += 1

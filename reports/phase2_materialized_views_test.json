@@ -1,0 +1,34 @@
+{
+  "test_database": "shehab_bigdata_phase2_mv_test",
+  "source_sample_size": 50000,
+  "materialized_views": {
+    "daily_sales_summary": 121,
+    "top_products_summary": 12
+  },
+  "initial_build": "PASS",
+  "incremental_update": {
+    "status": "PASS",
+    "daily_sales_delta": 1000.0,
+    "product_sales_delta": 500.0,
+    "product_quantity_delta": 1.0
+  },
+  "no_change_replay": "PASS",
+  "incremental_result": {
+    "mode": "incremental",
+    "daily_groups_updated": 1,
+    "product_groups_updated": 1,
+    "views": [
+      "daily_sales_summary",
+      "top_products_summary"
+    ]
+  },
+  "replay_result": {
+    "mode": "incremental",
+    "daily_groups_updated": 1,
+    "product_groups_updated": 1,
+    "views": [
+      "daily_sales_summary",
+      "top_products_summary"
+    ]
+  }
+}

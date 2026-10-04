@@ -1,0 +1,73 @@
+{
+  "database": "shehab_bigdata",
+  "collection": "orders_validated",
+  "verbosity": "executionStats",
+  "comparisons": [
+    {
+      "query": "orders_by_city",
+      "filter": {
+        "city": "إب"
+      },
+      "expected_index": "idx_p2_city_total",
+      "before": {
+        "nReturned": 20,
+        "totalDocsExamined": 26207381,
+        "totalKeysExamined": 0,
+        "executionTimeMillis": 63589,
+        "indexUsed": null
+      },
+      "after": {
+        "nReturned": 20,
+        "totalDocsExamined": 20,
+        "totalKeysExamined": 20,
+        "executionTimeMillis": 8,
+        "indexUsed": "idx_p2_city_total"
+      },
+      "docs_examined_reduction": 26207361
+    },
+    {
+      "query": "orders_by_status",
+      "filter": {
+        "status": "تم التسليم"
+      },
+      "expected_index": "idx_p2_status_date",
+      "before": {
+        "nReturned": 20,
+        "totalDocsExamined": 26207381,
+        "totalKeysExamined": 0,
+        "executionTimeMillis": 59960,
+        "indexUsed": null
+      },
+      "after": {
+        "nReturned": 20,
+        "totalDocsExamined": 20,
+        "totalKeysExamined": 20,
+        "executionTimeMillis": 6,
+        "indexUsed": "idx_p2_status_date"
+      },
+      "docs_examined_reduction": 26207361
+    },
+    {
+      "query": "customer_orders",
+      "filter": {
+        "customer_id": "عميل-1"
+      },
+      "expected_index": "idx_p2_customer_date",
+      "before": {
+        "nReturned": 1,
+        "totalDocsExamined": 26207381,
+        "totalKeysExamined": 0,
+        "executionTimeMillis": 58313,
+        "indexUsed": null
+      },
+      "after": {
+        "nReturned": 1,
+        "totalDocsExamined": 1,
+        "totalKeysExamined": 1,
+        "executionTimeMillis": 0,
+        "indexUsed": "idx_p2_customer_date"
+      },
+      "docs_examined_reduction": 26207380
+    }
+  ]
+}

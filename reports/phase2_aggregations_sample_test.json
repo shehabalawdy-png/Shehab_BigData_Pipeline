@@ -1,0 +1,200 @@
+{
+  "test_type": "real_data_sample",
+  "source_collection": "orders_validated",
+  "temporary_collection": "orders_validated_phase2_sample",
+  "sample_size": 100000,
+  "aggregation_count": 5,
+  "passed": 5,
+  "results": [
+    {
+      "name": "sales_by_city",
+      "status": "PASS",
+      "execution_time_seconds": 0.25,
+      "returned": 10,
+      "results": [
+        {
+          "_id": "عدن",
+          "order_count": 10008,
+          "total_sales": 2664941000.0,
+          "average_order_value": 266281.0751398881
+        },
+        {
+          "_id": "لحج",
+          "order_count": 10108,
+          "total_sales": 2631236000.0,
+          "average_order_value": 260312.22793826673
+        },
+        {
+          "_id": "ذمار",
+          "order_count": 10255,
+          "total_sales": 2626323500.0,
+          "average_order_value": 256101.75524134567
+        },
+        {
+          "_id": "الحديدة",
+          "order_count": 9918,
+          "total_sales": 2593505000.0,
+          "average_order_value": 261494.7570074612
+        },
+        {
+          "_id": "المكلا",
+          "order_count": 9911,
+          "total_sales": 2582111000.0,
+          "average_order_value": 260529.8153566744
+        },
+        {
+          "_id": "تعز",
+          "order_count": 10063,
+          "total_sales": 2565213000.0,
+          "average_order_value": 254915.33339958263
+        },
+        {
+          "_id": "إب",
+          "order_count": 9851,
+          "total_sales": 2559511500.0,
+          "average_order_value": 259822.5053294082
+        },
+        {
+          "_id": "صنعاء",
+          "order_count": 10051,
+          "total_sales": 2556286000.0,
+          "average_order_value": 254331.50930255695
+        },
+        {
+          "_id": "حجة",
+          "order_count": 9973,
+          "total_sales": 2553937500.0,
+          "average_order_value": 256085.1799859621
+        },
+        {
+          "_id": "عمران",
+          "order_count": 9862,
+          "total_sales": 2549936500.0,
+          "average_order_value": 258561.80287974043
+        }
+      ]
+    },
+    {
+      "name": "orders_by_status",
+      "status": "PASS",
+      "execution_time_seconds": 0.166,
+      "returned": 6,
+      "results": [
+        {
+          "_id": "ملغي",
+          "order_count": 16811,
+          "total_sales": 4346773000.0
+        },
+        {
+          "_id": "مؤكد",
+          "order_count": 16741,
+          "total_sales": 4315152000.0
+        },
+        {
+          "_id": "قيد الانتظار",
+          "order_count": 16694,
+          "total_sales": 4385835000.0
+        },
+        {
+          "_id": "مرتجع",
+          "order_count": 16648,
+          "total_sales": 4271626000.0
+        },
+        {
+          "_id": "قيد الشحن",
+          "order_count": 16600,
+          "total_sales": 4278191000.0
+        },
+        {
+          "_id": "تم التسليم",
+          "order_count": 16506,
+          "total_sales": 4285424000.0
+        }
+      ]
+    },
+    {
+      "name": "payment_method_summary",
+      "status": "PASS",
+      "execution_time_seconds": 0.182,
+      "returned": 3,
+      "results": [
+        {
+          "_id": "بطاقة",
+          "order_count": 33434,
+          "total_sales": 8702665000.0,
+          "average_order_value": 260293.86253514385
+        },
+        {
+          "_id": "محفظة إلكترونية",
+          "order_count": 33425,
+          "total_sales": 8672868000.0,
+          "average_order_value": 259472.49065071053
+        },
+        {
+          "_id": "نقدًا عند التسليم",
+          "order_count": 33141,
+          "total_sales": 8507468000.0,
+          "average_order_value": 256705.22917232433
+        }
+      ]
+    },
+    {
+      "name": "delivery_type_summary",
+      "status": "PASS",
+      "execution_time_seconds": 0.142,
+      "returned": 2,
+      "results": [
+        {
+          "_id": "عادي",
+          "order_count": 50085,
+          "total_sales": 12886511500.0,
+          "total_delivery_cost": 101115000.0
+        },
+        {
+          "_id": "سريع",
+          "order_count": 49915,
+          "total_sales": 12996489500.0,
+          "total_delivery_cost": 248690000.0
+        }
+      ]
+    },
+    {
+      "name": "monthly_sales_summary",
+      "status": "PASS",
+      "execution_time_seconds": 0.204,
+      "returned": 5,
+      "results": [
+        {
+          "_id": "2025-01",
+          "order_count": 25555,
+          "total_sales": 6564287500.0,
+          "average_order_value": 256869.00802191353
+        },
+        {
+          "_id": "2025-02",
+          "order_count": 23412,
+          "total_sales": 6089180500.0,
+          "average_order_value": 260088.0104220058
+        },
+        {
+          "_id": "2025-03",
+          "order_count": 25712,
+          "total_sales": 6668969000.0,
+          "average_order_value": 259371.84971997511
+        },
+        {
+          "_id": "2025-04",
+          "order_count": 25014,
+          "total_sales": 6487656000.0,
+          "average_order_value": 259360.9978412089
+        },
+        {
+          "_id": "2025-05",
+          "order_count": 307,
+          "total_sales": 72908000.0,
+          "average_order_value": 237485.34201954398
+        }
+      ]
+    }
+  ]
+}
