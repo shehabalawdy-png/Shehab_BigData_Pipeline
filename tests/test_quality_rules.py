@@ -111,3 +111,74 @@ def test_total_is_recalculated_when_components_are_valid():
     }
 
     assert "TOTAL_RECALCULATED" in rule_codes
+
+
+def test_doctor_qty_string_is_corrected():
+    record = make_record()
+
+    items = json.loads(
+        record["items_json"]
+    )
+
+    items[0]["qty"] = "1"
+
+    record["items_json"] = json.dumps(
+        items,
+        ensure_ascii=False,
+    )
+
+    result = evaluate_record(
+        record
+    )
+
+    assert (
+        result.quality_status
+        == "corrected"
+    )
+
+    assert (
+        result.record["items"][0]["qty"]
+        == 1
+    )
+
+    rules = {
+        item["rule_code"]
+        for item in result.corrections
+    }
+
+    assert (
+        "QTY_STRING_TO_NUMERIC"
+        in rules
+    )
+
+
+def test_doctor_missing_item_sku_is_quarantined():
+    record = make_record()
+
+    items = json.loads(
+        record["items_json"]
+    )
+
+    items[0].pop(
+        "sku"
+    )
+
+    record["items_json"] = json.dumps(
+        items,
+        ensure_ascii=False,
+    )
+
+    result = evaluate_record(
+        record
+    )
+
+    assert (
+        result.quality_status
+        == "quarantined"
+    )
+
+    assert (
+        "ITEM_SKU_MISSING"
+        in result.error_codes
+    )
+

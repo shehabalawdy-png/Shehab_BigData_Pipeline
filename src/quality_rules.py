@@ -353,6 +353,7 @@ def normalize_date(
 
 def parse_items(
     value,
+    corrections=None,
 ):
     try:
         items = json.loads(value)
@@ -372,18 +373,74 @@ def parse_items(
             "items list is empty"
         )
 
-    for item in items:
+    for index, item in enumerate(items):
 
         if not isinstance(item, dict):
             raise ValueError(
                 "item is not an object"
             )
 
+        # SKU is required.
+        sku = str(
+            item.get("sku")
+            or ""
+        ).strip()
+
+        if not sku:
+            raise ValueError(
+                "missing item sku"
+            )
+
+        item["sku"] = sku
+
+        # Numeric quantity stored as a JSON string is safely correctable.
         qty = item.get("qty")
 
-        if not isinstance(
-            qty,
-            (int, float),
+        if isinstance(qty, str):
+
+            original_qty = qty
+            qty_text = qty.strip()
+
+            try:
+                qty_number = float(
+                    qty_text
+                )
+
+            except ValueError as exc:
+                raise ValueError(
+                    "item quantity is invalid"
+                ) from exc
+
+            if qty_number.is_integer():
+                corrected_qty = int(
+                    qty_number
+                )
+            else:
+                corrected_qty = (
+                    qty_number
+                )
+
+            item["qty"] = (
+                corrected_qty
+            )
+
+            qty = corrected_qty
+
+            if corrections is not None:
+                add_correction(
+                    corrections,
+                    f"items[{index}].qty",
+                    original_qty,
+                    corrected_qty,
+                    "QTY_STRING_TO_NUMERIC",
+                )
+
+        if (
+            isinstance(qty, bool)
+            or not isinstance(
+                qty,
+                (int, float),
+            )
         ):
             raise ValueError(
                 "item quantity is invalid"
@@ -399,15 +456,23 @@ def parse_items(
                 item["total"]
             )
 
-        except (KeyError, TypeError, ValueError):
+        except (
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as exc:
             raise ValueError(
                 "item total is invalid"
-            )
+            ) from exc
 
         if item_total < 0:
             raise ValueError(
                 "negative item total"
             )
+
+        item["total"] = (
+            item_total
+        )
 
     return items
 
@@ -757,7 +822,8 @@ def evaluate_record(
             record.get(
                 "items_json",
                 "",
-            )
+            ),
+            corrections=corrections,
         )
 
         record["items"] = items
@@ -769,6 +835,11 @@ def evaluate_record(
 
         if "empty" in message:
             error_code = "ITEMS_EMPTY"
+
+        elif "missing item sku" in message:
+            error_code = (
+                "ITEM_SKU_MISSING"
+            )
 
         elif "negative item quantity" in message:
             error_code = (
@@ -855,6 +926,7 @@ def evaluate_record(
         "DATE_IMPOSSIBLE_INVALID",
         "JSON_ITEMS_CORRUPTED",
         "ITEMS_EMPTY",
+        "ITEM_SKU_MISSING",
         "PRICE_UNKNOWN",
         "VALUE_NEGATIVE_AMBIGUOUS",
         "CURRENCY_UNKNOWN",
